@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -23,26 +24,27 @@ namespace HearthStone_Backend.Models
 
         public DbSet<Card> IDK { get; set; }
 
-        public async Task<List<Card>>  GetInfo()
+        public async Task<JObject>  GetInfo()
         {
-            List<Card> result = new List<Card>();
-
             HttpClient client = new HttpClient();
 
             client.BaseAddress = new Uri("http://localhost:5555/api/list");
             client.DefaultRequestHeaders.Add("x-rapidapi-host", apiHost);
             client.DefaultRequestHeaders.Add("x-rapidapi-key", apiKey);
 
+            JObject resultJSON = new JObject();
 
             HttpResponseMessage responseMessage = await client.GetAsync("https://omgvamp-hearthstone-v1.p.rapidapi.com/cards");
 
             if (responseMessage.IsSuccessStatusCode)
             {
-                Card card = await responseMessage.Content.ReadAsAsync<Card>();
-                result.Add(card);
-            }
+                string contentAsString = await responseMessage.Content.ReadAsStringAsync();
 
-            return result;
+                JObject contentAsJson = JsonConvert.DeserializeObject<JObject>(contentAsString);
+
+                resultJSON = new JObject(contentAsJson);
+            }
+            return resultJSON;
         } 
     }
 }

@@ -27,10 +27,9 @@ namespace HearthStone_Backend.Controllers
         [HttpGet("list")]
         public async Task<JObject> GetHomePageData()
         {
-            var result = await context.GetInfo();
-            JObject js = new JObject(result);
+            JObject result = await context.GetInfo();
 
-            return js;
+            return result;
         }
 
     }

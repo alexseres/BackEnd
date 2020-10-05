@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HearthStone_Backend.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,6 +28,7 @@ namespace HearthStone_Backend
         {
             services.AddDbContext<CardContext>(opt => opt.UseInMemoryDatabase("CardList"));
             services.AddControllers();
+            services.AddMvc().AddNewtonsoftJson();
             services.AddTransient<CardContext, CardContext>();
         }
 
