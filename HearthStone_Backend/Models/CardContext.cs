@@ -66,7 +66,7 @@ namespace HearthStone_Backend.Models
             return resultJSON;
         }
         
-        public async Task<List<JObject>> GetInfoToHomePage()
+        public async Task<JObject> GetInfoToHomePage()
         {
             HttpClient client = new HttpClient();
 
@@ -74,15 +74,15 @@ namespace HearthStone_Backend.Models
             client.DefaultRequestHeaders.Add("x-rapidapi-host", apiHost);
             client.DefaultRequestHeaders.Add("x-rapidapi-key", apiKey);
 
-            List<JObject> resultJSON = new List<JObject>();
+            JObject resultJSON = new JObject();
 
             HttpResponseMessage response = await client.GetAsync("https://omgvamp-hearthstone-v1.p.rapidapi.com/info");
 
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
-                List<JObject> deserializedContent = JsonConvert.DeserializeObject<List<JObject>>(content);
-                resultJSON = new List<JObject>(deserializedContent);
+                JObject deserializedContent = JsonConvert.DeserializeObject<JObject>(content);
+                resultJSON = new JObject(deserializedContent);
             }
             return resultJSON;
         }
