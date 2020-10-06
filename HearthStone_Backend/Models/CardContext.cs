@@ -43,6 +43,35 @@ namespace HearthStone_Backend.Models
                 resultJSON = new JObject(contentAsJson);
             }
             return resultJSON;
-        } 
+        }
+
+        public async Task<JObject> GetBackCards()
+        {
+            HttpClient client = new HttpClient();
+
+            client.BaseAddress = new Uri("http://localhost:5555/api/list");
+            client.DefaultRequestHeaders.Add("x-rapidapi-host", apiHost);
+            client.DefaultRequestHeaders.Add("x-rapidapi-key", apiKey);
+
+            JObject resultJSON = new JObject();
+
+
+            HttpResponseMessage response = await client.GetAsync("https://omgvamp-hearthstone-v1.p.rapidapi.com/cardbacks");
+
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                JObject deserializedContent = JsonConvert.DeserializeObject<JObject>(content);
+                resultJSON = new JObject(deserializedContent);
+            }
+
+            return resultJSON;
+
+        }
+
+
+
+
+
     }
 }
