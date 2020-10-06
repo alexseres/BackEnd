@@ -39,9 +39,7 @@ namespace HearthStone_Backend.Models
             if (responseMessage.IsSuccessStatusCode)
             {
                 string contentAsString = await responseMessage.Content.ReadAsStringAsync();
-
                 JObject contentAsJson = JsonConvert.DeserializeObject<JObject>(contentAsString);
-
                 resultJSON = new JObject(contentAsJson);
             }
             return resultJSON;
