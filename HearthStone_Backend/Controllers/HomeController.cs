@@ -32,9 +32,10 @@ namespace HearthStone_Backend.Controllers
             return result;
         }
         [HttpGet("cards-back")]
-        public async Task<JObject> GetCardsBackData()
+        public async Task<List<JObject>> GetCardsBackData()
         {
-            JObject result = await context.
+            List<JObject> result = await context.GetBackCards();
+            return result;
         }
     }
 }
