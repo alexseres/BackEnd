@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore.InMemory;
 using Microsoft.EntityFrameworkCore;
+using HearthStone_Backend.Services;
 
 namespace HearthStone_Backend
 {
@@ -37,10 +38,10 @@ namespace HearthStone_Backend
                                       builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
                                   });
             });
-            services.AddDbContext<CardContext>(opt => opt.UseInMemoryDatabase("CardList"));
+            //services.AddDbContext<CardContext>(opt => opt.UseInMemoryDatabase("CardList"));
             services.AddControllers();
             services.AddMvc().AddNewtonsoftJson();
-            services.AddTransient<CardContext, CardContext>();
+            services.AddSingleton<APIfetcher>(new APIfetcher());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

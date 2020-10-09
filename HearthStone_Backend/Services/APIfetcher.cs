@@ -1,34 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-
-namespace HearthStone_Backend.Models
+namespace HearthStone_Backend.Services
 {
-    public class CardContext : DbContext
+    public class APIfetcher
     {
         private readonly string apiHost = "omgvamp-hearthstone-v1.p.rapidapi.com";
         private readonly string apiKey = "dec58908a9msh533ee634def76d9p1385d4jsnb15fc973d01d";
 
-        public CardContext(DbContextOptions<CardContext> options)
-            : base(options)
-        {
-        }
 
-        public DbSet<Card> IDK { get; set; }
-
-        public async Task<JObject>  GetCards()
+        public async Task<JObject> GetCards()
         {
             HttpClient client = new HttpClient();
 
-            client.BaseAddress = new Uri("http://localhost:5555/api/list");
+            client.BaseAddress = new Uri("http://localhost:5000/api/list");
             client.DefaultRequestHeaders.Add("x-rapidapi-host", apiHost);
             client.DefaultRequestHeaders.Add("x-rapidapi-key", apiKey);
 
@@ -45,11 +35,12 @@ namespace HearthStone_Backend.Models
             return resultJSON;
         }
 
+
         public async Task<List<JObject>> GetBackCards()
         {
             HttpClient client = new HttpClient();
 
-            client.BaseAddress = new Uri("http://localhost:5555/api/cards-back");
+            client.BaseAddress = new Uri("http://localhost:5000/api/cards-back");
             client.DefaultRequestHeaders.Add("x-rapidapi-host", apiHost);
             client.DefaultRequestHeaders.Add("x-rapidapi-key", apiKey);
 
@@ -65,12 +56,12 @@ namespace HearthStone_Backend.Models
             }
             return resultJSON;
         }
-        
+
         public async Task<JObject> GetInfoToHomePage()
         {
             HttpClient client = new HttpClient();
 
-            client.BaseAddress = new Uri("http://localhost:5555/api/info");
+            client.BaseAddress = new Uri("http://localhost:5000/api/info");
             client.DefaultRequestHeaders.Add("x-rapidapi-host", apiHost);
             client.DefaultRequestHeaders.Add("x-rapidapi-key", apiKey);
 
@@ -86,10 +77,5 @@ namespace HearthStone_Backend.Models
             }
             return resultJSON;
         }
-
-
-
-
-
     }
 }
