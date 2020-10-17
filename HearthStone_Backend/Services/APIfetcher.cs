@@ -5,77 +5,67 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using HearthStone_Backend.Models;
+using Microsoft.AspNetCore.Http;
+
 
 namespace HearthStone_Backend.Services
 {
     public class APIfetcher
     {
+        private readonly string urlOfHome = "http://localhost:5000/api/";
+        private readonly string urlOfApi = "https://omgvamp-hearthstone-v1.p.rapidapi.com/";
         private readonly string apiHost = "omgvamp-hearthstone-v1.p.rapidapi.com";
         private readonly string apiKey = "dec58908a9msh533ee634def76d9p1385d4jsnb15fc973d01d";
-
-
-        public async Task<JObject> GetCards()
+        private Dictionary<string, List<Card>> cardsDictionary;
+        private List<CardsBack> cardsBackList;
+        private Info infoContents;
+        
+        public HttpClient BuildsClient(string keyword)
         {
             HttpClient client = new HttpClient();
-
-            client.BaseAddress = new Uri("http://localhost:5000/api/list");
+            client.BaseAddress = new Uri(urlOfHome+keyword);
             client.DefaultRequestHeaders.Add("x-rapidapi-host", apiHost);
             client.DefaultRequestHeaders.Add("x-rapidapi-key", apiKey);
+            return client;
+        }
 
-            JObject resultJSON = new JObject();
-
-            HttpResponseMessage responseMessage = await client.GetAsync("https://omgvamp-hearthstone-v1.p.rapidapi.com/cards");
-
+        public async Task<Dictionary<string, List<Card>>> GetCards()
+        {
+            HttpClient client = BuildsClient("list");
+            HttpResponseMessage responseMessage = await client.GetAsync(urlOfApi + "cards");
             if (responseMessage.IsSuccessStatusCode)
             {
-                string contentAsString = await responseMessage.Content.ReadAsStringAsync();
-                JObject contentAsJson = JsonConvert.DeserializeObject<JObject>(contentAsString);
-                resultJSON = new JObject(contentAsJson);
+                var contentAsString = await responseMessage.Content.ReadAsStringAsync();
+                cardsDictionary = JsonConvert.DeserializeObject<Dictionary<string,List<Card>>>(contentAsString);
             }
-            return resultJSON;
+            return cardsDictionary;
         }
 
 
-        public async Task<List<JObject>> GetBackCards()
+        public async Task<List<CardsBack>> GetBackCards()
         {
-            HttpClient client = new HttpClient();
-
-            client.BaseAddress = new Uri("http://localhost:5000/api/cards-back");
-            client.DefaultRequestHeaders.Add("x-rapidapi-host", apiHost);
-            client.DefaultRequestHeaders.Add("x-rapidapi-key", apiKey);
-
-            List<JObject> resultJSON = new List<JObject>();
-
-            HttpResponseMessage response = await client.GetAsync("https://omgvamp-hearthstone-v1.p.rapidapi.com/cardbacks");
-
+            HttpClient client = BuildsClient("cards-back");
+            HttpResponseMessage response = await client.GetAsync(urlOfApi +"cardbacks");
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
-                List<JObject> deserializedContent = JsonConvert.DeserializeObject<List<JObject>>(content);
-                resultJSON = new List<JObject>(deserializedContent);
+                cardsBackList = JsonConvert.DeserializeObject<List<CardsBack>>(content);
+                
             }
-            return resultJSON;
+            return cardsBackList;
         }
 
-        public async Task<JObject> GetInfoToHomePage()
+        public async Task<Info> GetInfoToHomePage()
         {
-            HttpClient client = new HttpClient();
-
-            client.BaseAddress = new Uri("http://localhost:5000/api/info");
-            client.DefaultRequestHeaders.Add("x-rapidapi-host", apiHost);
-            client.DefaultRequestHeaders.Add("x-rapidapi-key", apiKey);
-
-            JObject resultJSON = new JObject();
-
-            HttpResponseMessage response = await client.GetAsync("https://omgvamp-hearthstone-v1.p.rapidapi.com/info");
-
+            HttpClient client = BuildsClient("info");
+            HttpResponseMessage response = await client.GetAsync(urlOfApi +"info");
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
-                JObject deserializedContent = JsonConvert.DeserializeObject<JObject>(content);
-                resultJSON = new JObject(deserializedContent);
+                infoContents = JsonConvert.DeserializeObject<Info>(content);
             }
-            return resultJSON;
+            return infoContents;
         }
     }
 }

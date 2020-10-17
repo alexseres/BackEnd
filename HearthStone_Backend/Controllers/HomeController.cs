@@ -26,25 +26,23 @@ namespace HearthStone_Backend.Controllers
         }
         
         [HttpGet("list")]
-        public async Task<JObject> GetHomePageData()
+        public async Task<Dictionary<string, List<Card>>> GetHomePageData()
         {
-            JObject result = await _contextNEW.GetCards();
-
+            var result = await _contextNEW.GetCards();
             return result;
         }
         
         [HttpGet("info")]
-        public async Task<JObject> GetInfoToHomePage()
+        public async Task<Info> GetInfoToHomePage()
         {
-            JObject result = await _contextNEW.GetInfoToHomePage();
-
+            var result = await _contextNEW.GetInfoToHomePage();
             return result;
         }
 
         [HttpGet("cards-back")]
-        public async Task<List<JObject>> GetCardsBackData()
+        public async Task<List<CardsBack>> GetCardsBackData()
         {
-            List<JObject> result = await _contextNEW.GetBackCards();
+            var result = await _contextNEW.GetBackCards();
             return result;
         }
     }
