@@ -18,6 +18,7 @@ namespace HearthStone_Backend.Services
         private readonly string apiHost = "omgvamp-hearthstone-v1.p.rapidapi.com";
         private readonly string apiKey = "dec58908a9msh533ee634def76d9p1385d4jsnb15fc973d01d";
         private Dictionary<string, List<Card>> cardsDictionary;
+        private List<Card> CardsList;
         private List<CardsBack> cardsBackList;
         private Info infoContents;
         
@@ -39,6 +40,7 @@ namespace HearthStone_Backend.Services
                 var contentAsString = await responseMessage.Content.ReadAsStringAsync();
                 cardsDictionary = JsonConvert.DeserializeObject<Dictionary<string,List<Card>>>(contentAsString);
             }
+            CardsList = cardsDictionary.SelectMany(d => d.Value).ToList();
             return cardsDictionary;
         }
 
