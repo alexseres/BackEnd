@@ -55,8 +55,10 @@ namespace HearthStone_Backend
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
             app.UseCors(MyAllowSpecificOrigins);
+
+            app.UseAuthentication();
+            
 
             app.UseStaticFiles();
 

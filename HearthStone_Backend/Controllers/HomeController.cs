@@ -12,6 +12,7 @@ using HearthStone_Backend.Services;
 
 namespace HearthStone_Backend.Controllers
 {
+    
     [Route("api")]
     [ApiController]
     public class HomeController : ControllerBase
@@ -23,6 +24,21 @@ namespace HearthStone_Backend.Controllers
         {
             _logger = logger;
             _contextNEW = apiFetcher;
+        }
+
+        [HttpPost("search")]
+        public async Task<List<Card>> GetAskedCardForSearch([FromBody]string data)
+        {
+            List<Card> list = _contextNEW.CardsList;
+            List<Card> expectedResults = list.FindAll(x => x.Name.Contains(data));
+            return expectedResults;
+        }
+        
+        
+        [HttpGet("search")]
+        public async Task GetCardsForSearch()
+        {
+            var list = await  _contextNEW.GetCardsForSearch();
         }
         
         [HttpGet("list")]

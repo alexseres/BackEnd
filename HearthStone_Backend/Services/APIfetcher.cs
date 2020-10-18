@@ -18,10 +18,16 @@ namespace HearthStone_Backend.Services
         private readonly string apiHost = "omgvamp-hearthstone-v1.p.rapidapi.com";
         private readonly string apiKey = "dec58908a9msh533ee634def76d9p1385d4jsnb15fc973d01d";
         private Dictionary<string, List<Card>> cardsDictionary;
-        private List<Card> CardsList;
+        private List<Card> cardsList;
         private List<CardsBack> cardsBackList;
         private Info infoContents;
-        
+
+        public List<Card> CardsList
+        {
+            get => cardsList;
+        }
+
+
         public HttpClient BuildsClient(string keyword)
         {
             HttpClient client = new HttpClient();
@@ -30,6 +36,23 @@ namespace HearthStone_Backend.Services
             client.DefaultRequestHeaders.Add("x-rapidapi-key", apiKey);
             return client;
         }
+        
+        
+        public async Task<List<Card>> GetCardsForSearch()
+        {
+            HttpClient client = BuildsClient("list");
+            HttpResponseMessage responseMessage = await client.GetAsync(urlOfApi + "cards");
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var contentAsString = await responseMessage.Content.ReadAsStringAsync();
+                cardsDictionary = JsonConvert.DeserializeObject<Dictionary<string,List<Card>>>(contentAsString);
+            }
+            cardsList = cardsDictionary.SelectMany(d  => d.Value.Where(card => card.img != null)).ToList();
+            return cardsList;
+        }
+
+
+        
 
         public async Task<Dictionary<string, List<Card>>> GetCards()
         {
@@ -40,10 +63,9 @@ namespace HearthStone_Backend.Services
                 var contentAsString = await responseMessage.Content.ReadAsStringAsync();
                 cardsDictionary = JsonConvert.DeserializeObject<Dictionary<string,List<Card>>>(contentAsString);
             }
-            CardsList = cardsDictionary.SelectMany(d => d.Value).ToList();
             return cardsDictionary;
         }
-
+        
 
         public async Task<List<CardsBack>> GetBackCards()
         {
@@ -53,7 +75,6 @@ namespace HearthStone_Backend.Services
             {
                 string content = await response.Content.ReadAsStringAsync();
                 cardsBackList = JsonConvert.DeserializeObject<List<CardsBack>>(content);
-                
             }
             return cardsBackList;
         }
