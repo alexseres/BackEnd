@@ -37,9 +37,9 @@ namespace HearthStone_Backend.Controllers
         
         
         [HttpGet("list")]
-        public async Task<Dictionary<string, List<Card>>> GetHomePageData()
+        public async Task<List<Card>>  GetHomePageData()
         {
-            var result = _contextNEW.CardsDictionary;
+            var result = _contextNEW.CardsList.Take(25).ToList();
             return result;
         }
         

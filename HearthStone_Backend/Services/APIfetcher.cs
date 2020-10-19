@@ -73,11 +73,7 @@ namespace HearthStone_Backend.Services
                 cardsDictionary = JsonConvert.DeserializeObject<Dictionary<string,List<Card>>>(contentAsString);
             }
             cardsList = cardsDictionary.SelectMany(d  => d.Value.Where(card => card.img != null)).ToList();
-      
         }
-
-
-        
 
         public  async void  GetCards()
         {
