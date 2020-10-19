@@ -22,9 +22,34 @@ namespace HearthStone_Backend.Services
         private List<CardsBack> cardsBackList;
         private Info infoContents;
 
+
+        public APIfetcher()
+        {
+            GetInfoToHomePage();
+            GetCards();
+            GetCardsForSearch();
+            GetBackCards();
+        }
+        
         public List<Card> CardsList
         {
             get => cardsList;
+        }
+
+        public List<CardsBack> CardsBackList
+        {
+            get => cardsBackList;
+        }
+
+        public Dictionary<string, List<Card>> CardsDictionary
+        {
+            get => cardsDictionary;
+        
+        }
+
+        public Info InfoContents
+        {
+            get => infoContents;
         }
 
 
@@ -38,7 +63,7 @@ namespace HearthStone_Backend.Services
         }
         
         
-        public async Task<List<Card>> GetCardsForSearch()
+        public async void GetCardsForSearch()
         {
             HttpClient client = BuildsClient("list");
             HttpResponseMessage responseMessage = await client.GetAsync(urlOfApi + "cards");
@@ -48,13 +73,13 @@ namespace HearthStone_Backend.Services
                 cardsDictionary = JsonConvert.DeserializeObject<Dictionary<string,List<Card>>>(contentAsString);
             }
             cardsList = cardsDictionary.SelectMany(d  => d.Value.Where(card => card.img != null)).ToList();
-            return cardsList;
+      
         }
 
 
         
 
-        public async Task<Dictionary<string, List<Card>>> GetCards()
+        public  async void  GetCards()
         {
             HttpClient client = BuildsClient("list");
             HttpResponseMessage responseMessage = await client.GetAsync(urlOfApi + "cards");
@@ -63,11 +88,11 @@ namespace HearthStone_Backend.Services
                 var contentAsString = await responseMessage.Content.ReadAsStringAsync();
                 cardsDictionary = JsonConvert.DeserializeObject<Dictionary<string,List<Card>>>(contentAsString);
             }
-            return cardsDictionary;
+
         }
         
 
-        public async Task<List<CardsBack>> GetBackCards()
+        public async void GetBackCards()
         {
             HttpClient client = BuildsClient("cards-back");
             HttpResponseMessage response = await client.GetAsync(urlOfApi +"cardbacks");
@@ -76,10 +101,10 @@ namespace HearthStone_Backend.Services
                 string content = await response.Content.ReadAsStringAsync();
                 cardsBackList = JsonConvert.DeserializeObject<List<CardsBack>>(content);
             }
-            return cardsBackList;
+
         }
 
-        public async Task<Info> GetInfoToHomePage()
+        public async void GetInfoToHomePage()
         {
             HttpClient client = BuildsClient("info");
             HttpResponseMessage response = await client.GetAsync(urlOfApi +"info");
@@ -88,7 +113,7 @@ namespace HearthStone_Backend.Services
                 string content = await response.Content.ReadAsStringAsync();
                 infoContents = JsonConvert.DeserializeObject<Info>(content);
             }
-            return infoContents;
+
         }
     }
 }

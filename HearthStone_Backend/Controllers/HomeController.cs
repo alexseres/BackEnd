@@ -24,8 +24,9 @@ namespace HearthStone_Backend.Controllers
         {
             _logger = logger;
             _contextNEW = apiFetcher;
-        }
 
+        }
+        
         [HttpPost("search")]
         public async Task<List<Card>> GetAskedCardForSearch([FromBody]string data)
         {
@@ -35,30 +36,25 @@ namespace HearthStone_Backend.Controllers
         }
         
         
-        [HttpGet("search")]
-        public async Task GetCardsForSearch()
-        {
-            var list = await  _contextNEW.GetCardsForSearch();
-        }
-        
         [HttpGet("list")]
         public async Task<Dictionary<string, List<Card>>> GetHomePageData()
         {
-            var result = await _contextNEW.GetCards();
+            var result = _contextNEW.CardsDictionary;
             return result;
         }
         
         [HttpGet("info")]
         public async Task<Info> GetInfoToHomePage()
         {
-            var result = await _contextNEW.GetInfoToHomePage();
+
+            var result =  _contextNEW.InfoContents;
             return result;
         }
 
         [HttpGet("cards-back")]
         public async Task<List<CardsBack>> GetCardsBackData()
         {
-            var result = await _contextNEW.GetBackCards();
+            var result = _contextNEW.CardsBackList;
             return result;
         }
     }
