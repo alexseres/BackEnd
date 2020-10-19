@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Permissions;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace HearthStone_Backend.Models
 {
     public class Card
     {
+        [Required]
         public string CardId { get; set; }
         public string Name { get; set; }
         public string CardSet { get; set; }

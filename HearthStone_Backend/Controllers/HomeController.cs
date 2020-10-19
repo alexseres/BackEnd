@@ -17,13 +17,13 @@ namespace HearthStone_Backend.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly APIfetcher _contextNEW;
+        private readonly ICardRepository _cardRepository;
 
-        public HomeController(ILogger<HomeController> logger, APIfetcher apiFetcher)
+        public HomeController(ICardRepository repository, APIfetcher apiFetcher)
         {
-            _logger = logger;
             _contextNEW = apiFetcher;
+            _cardRepository = repository;
 
         }
         

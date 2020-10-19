@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Microsoft.EntityFrameworkCore;
 using HearthStone_Backend.Services;
 
@@ -38,10 +37,14 @@ namespace HearthStone_Backend
                                       builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
                                   });
             });
-            //services.AddDbContext<CardContext>(opt => opt.UseInMemoryDatabase("CardList"));
+
+            services.AddDbContextPool<CardDBContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("CardDBConnection")));
+
             services.AddControllers();
             services.AddMvc().AddNewtonsoftJson();
             services.AddSingleton<APIfetcher>(new APIfetcher());
+            services.AddScoped<ICardRepository, SQLCardRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
