@@ -31,7 +31,7 @@ namespace HearthStone_Backend.Controllers
         [HttpPost("search")]
         public async Task<List<Card>> GetAskedCardForSearch([FromBody]string data)
         {
-            List<Card> list = (List<Card>)_cardRepository.GetCards();
+            List<Card> list = _cardRepository.GetCards().ToList();
             List<Card> expectedResults = list.FindAll(x => x.Name.Contains(data));
             return expectedResults;
         }
@@ -42,8 +42,10 @@ namespace HearthStone_Backend.Controllers
         [HttpGet("list")]
         public async Task<List<Card>>  GetHomePageData()
         {
-
-
+            List<Card> result = await _apiFetcher.GetCards();
+            _cardRepository.AddCards(result);
+            
+            
             return _cardRepository.GetCards().Take(50).ToList();
         }
         
@@ -62,7 +64,10 @@ namespace HearthStone_Backend.Controllers
 
         [HttpGet("cards-back")]
         public async Task<List<CardBack>> GetCardsBackData()
-        { 
+        {
+            var list = await _apiFetcher.GetBackCards();
+            _cardRepository.AddCardBacks(list);
+            
             return _cardRepository.GetCardBacks().ToList();
         }
     }

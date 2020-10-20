@@ -28,7 +28,7 @@ namespace HearthStone_Backend.Services
             return client;
         }
 
-        public async Task<Dictionary<string, List<Card>>> GetCards()
+        public async Task<List<Card>> GetCards()
         {
             HttpClient client = BuildsClient("list");
             HttpResponseMessage responseMessage = await client.GetAsync(urlOfApi + "cards");
@@ -36,7 +36,10 @@ namespace HearthStone_Backend.Services
             {
                 var contentAsString = await responseMessage.Content.ReadAsStringAsync();
                 Dictionary<string, List<Card>> result = JsonConvert.DeserializeObject<Dictionary<string, List<Card>>>(contentAsString);
-                return result;
+                var cardsList = result.SelectMany(d  => d.Value.Where(card => card.img != null)).ToList()
+                    .Where(x=> URLExistsChecker.Checker(x.img) == true).ToList();
+
+                return cardsList;
             }
             else
             {
@@ -53,7 +56,8 @@ namespace HearthStone_Backend.Services
             {
                 string content = await response.Content.ReadAsStringAsync();
                 List<CardBack> cardBackList = JsonConvert.DeserializeObject<List<CardBack>>(content);
-
+                cardBackList = cardBackList.Where(x => x.Img != null).ToList()
+                    .Where(y => URLExistsChecker.Checker(y.Img) == true).ToList();
                 return cardBackList;
             } else
             {
