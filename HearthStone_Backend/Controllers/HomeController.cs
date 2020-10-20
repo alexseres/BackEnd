@@ -43,12 +43,6 @@ namespace HearthStone_Backend.Controllers
         public async Task<List<Card>>  GetHomePageData()
         {
 
-            Dictionary<string, List<Card>> apiResult = await _apiFetcher.GetCards();
-
-            foreach (List<Card> list in apiResult.Values)
-            {
-                _cardRepository.AddCards(list);
-            }
 
             return _cardRepository.GetCards().Take(50).ToList();
         }
@@ -68,11 +62,7 @@ namespace HearthStone_Backend.Controllers
 
         [HttpGet("cards-back")]
         public async Task<List<CardBack>> GetCardsBackData()
-        {
-            List<CardBack> result = await _apiFetcher.GetBackCards();
-
-            _cardRepository.AddCardBacks(result);
-
+        { 
             return _cardRepository.GetCardBacks().ToList();
         }
     }
