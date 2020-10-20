@@ -16,9 +16,7 @@ namespace HearthStone_Backend
 {
     public class Startup
     {
-
         readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -38,13 +36,13 @@ namespace HearthStone_Backend
                                   });
             });
 
-            services.AddDbContextPool<CardDBContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("CardDBConnection")));
-
-            services.AddControllers();
             services.AddMvc().AddNewtonsoftJson();
+            services.AddControllers();
             services.AddSingleton<APIfetcher>(new APIfetcher());
             services.AddScoped<ICardRepository, SQLCardRepository>();
+            services.AddDbContextPool<CardDBContext>(options =>
+                // options.UseNpgsql(Configuration.GetConnectionString("CardDBConnection")));
+                options.UseNpgsql("Server=127.0.0.1;Port=5432;Database=hearth_stone;Username=alexseres;Password=szopacs11;"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
