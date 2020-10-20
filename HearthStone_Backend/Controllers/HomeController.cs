@@ -52,9 +52,9 @@ namespace HearthStone_Backend.Controllers
         }
 
         [HttpGet("cards-back")]
-        public async Task<List<CardsBack>> GetCardsBackData()
+        public async Task<List<CardBack>> GetCardsBackData()
         {
-            var result = _contextNEW.CardsBackList;
+            var result = _contextNEW.CardBackList;
             return result;
         }
     }

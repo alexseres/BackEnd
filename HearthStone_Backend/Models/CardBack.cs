@@ -1,6 +1,6 @@
 namespace HearthStone_Backend.Models
 {
-    public class CardsBack
+    public class CardBack
     {
         public string CardBackId { get; set; }
         public string Name { get; set; }
@@ -12,6 +12,5 @@ namespace HearthStone_Backend.Models
         public string SortCategory { get; set; }
         public string SortOrder { get; set; }
         public string Locale { get; set; }
-  
     }
 }

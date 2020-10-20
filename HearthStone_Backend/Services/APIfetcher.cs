@@ -19,7 +19,7 @@ namespace HearthStone_Backend.Services
         private readonly string apiKey = "dec58908a9msh533ee634def76d9p1385d4jsnb15fc973d01d";
         private Dictionary<string, List<Card>> cardsDictionary;
         private List<Card> cardsList;
-        private List<CardsBack> cardsBackList;
+        private List<CardBack> cardBackList;
         private Info infoContents;
 
 
@@ -36,9 +36,9 @@ namespace HearthStone_Backend.Services
             get => cardsList;
         }
 
-        public List<CardsBack> CardsBackList
+        public List<CardBack> CardBackList
         {
-            get => cardsBackList;
+            get => cardBackList;
         }
 
         public Dictionary<string, List<Card>> CardsDictionary
@@ -95,7 +95,7 @@ namespace HearthStone_Backend.Services
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
-                cardsBackList = JsonConvert.DeserializeObject<List<CardsBack>>(content);
+                cardBackList = JsonConvert.DeserializeObject<List<CardBack>>(content);
             }
 
         }
