@@ -66,31 +66,5 @@ namespace HearthStone_Backend.Models
             _context.CardBacks.Remove(cardBack);
         }
 
-        public Info GetInfo(string id)
-        {
-            return _context.Infos.Find(id);
-        }
-
-        public IEnumerable<Info> GetInfos()
-        {
-            return _context.Infos;
-        }
-
-        public void AddInfos(List<Info> infos)
-        {
-            foreach (Info info in infos)
-            {
-                _context.Infos.Add(info);
-            }
-
-            _context.SaveChanges();
-        }
-
-        public void DeleteInfo(Info info)
-        {
-            _context.Remove(info);
-            _context.SaveChanges();
-        }
-
     }
 }

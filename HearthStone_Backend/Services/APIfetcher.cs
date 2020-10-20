@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using HearthStone_Backend.Models;
 using Microsoft.AspNetCore.Http;
-
+using Microsoft.Extensions.Logging;
 
 namespace HearthStone_Backend.Services
 {
@@ -17,41 +17,7 @@ namespace HearthStone_Backend.Services
         private readonly string urlOfApi = "https://omgvamp-hearthstone-v1.p.rapidapi.com/";
         private readonly string apiHost = "omgvamp-hearthstone-v1.p.rapidapi.com";
         private readonly string apiKey = "dec58908a9msh533ee634def76d9p1385d4jsnb15fc973d01d";
-        private Dictionary<string, List<Card>> cardsDictionary;
-        private List<Card> cardsList;
-        private List<CardBack> cardBackList;
-        private Info infoContents;
-
-
-        public APIfetcher()
-        {
-            GetInfoToHomePage();
-            GetCards();
-            GetCardsForSearch();
-            GetBackCards();
-        }
         
-        public List<Card> CardsList
-        {
-            get => cardsList;
-        }
-
-        public List<CardBack> CardBackList
-        {
-            get => cardBackList;
-        }
-
-        public Dictionary<string, List<Card>> CardsDictionary
-        {
-            get => cardsDictionary;
-        
-        }
-
-        public Info InfoContents
-        {
-            get => infoContents;
-        }
-
 
         public HttpClient BuildsClient(string keyword)
         {
@@ -61,53 +27,54 @@ namespace HearthStone_Backend.Services
             client.DefaultRequestHeaders.Add("x-rapidapi-key", apiKey);
             return client;
         }
-        
-        
-        public async void GetCardsForSearch()
+
+        public async Task<Dictionary<string, List<Card>>> GetCards()
         {
             HttpClient client = BuildsClient("list");
             HttpResponseMessage responseMessage = await client.GetAsync(urlOfApi + "cards");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var contentAsString = await responseMessage.Content.ReadAsStringAsync();
-                cardsDictionary = JsonConvert.DeserializeObject<Dictionary<string,List<Card>>>(contentAsString);
+                Dictionary<string, List<Card>> result = JsonConvert.DeserializeObject<Dictionary<string, List<Card>>>(contentAsString);
+                return result;
             }
-            cardsList = cardsDictionary.SelectMany(d  => d.Value.Where(card => card.img != null)).ToList();
-        }
-
-        public  async void  GetCards()
-        {
-            HttpClient client = BuildsClient("list");
-            HttpResponseMessage responseMessage = await client.GetAsync(urlOfApi + "cards");
-            if (responseMessage.IsSuccessStatusCode)
+            else
             {
-                var contentAsString = await responseMessage.Content.ReadAsStringAsync();
-                cardsDictionary = JsonConvert.DeserializeObject<Dictionary<string,List<Card>>>(contentAsString);
+                return null;
             }
 
         }
-        
 
-        public async void GetBackCards()
+        public async Task<List<CardBack>> GetBackCards()
         {
             HttpClient client = BuildsClient("cards-back");
             HttpResponseMessage response = await client.GetAsync(urlOfApi +"cardbacks");
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
-                cardBackList = JsonConvert.DeserializeObject<List<CardBack>>(content);
+                List<CardBack> cardBackList = JsonConvert.DeserializeObject<List<CardBack>>(content);
+
+                return cardBackList;
+            } else
+            {
+                return null;
             }
 
         }
 
-        public async void GetInfoToHomePage()
+        public async Task<Info> GetInfoToHomePage()
         {
             HttpClient client = BuildsClient("info");
             HttpResponseMessage response = await client.GetAsync(urlOfApi +"info");
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
-                infoContents = JsonConvert.DeserializeObject<Info>(content);
+                Info infoContents = JsonConvert.DeserializeObject<Info>(content);
+
+                return infoContents;
+            } else
+            {
+                return null;
             }
 
         }

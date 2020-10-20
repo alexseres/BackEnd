@@ -35,13 +35,14 @@ namespace HearthStone_Backend
                                       builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
                                   });
             });
+            services.AddDbContextPool<CardDBContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("CardDBConnection")));
 
             services.AddMvc().AddNewtonsoftJson();
             services.AddControllers();
-            services.AddSingleton<APIfetcher>(new APIfetcher());
+
             services.AddScoped<ICardRepository, SQLCardRepository>();
-            services.AddDbContextPool<CardDBContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("CardDBConnection")));
+            services.AddScoped<APIfetcher>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
