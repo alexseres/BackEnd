@@ -14,7 +14,6 @@ namespace HearthStone_Backend.Models
 
         public DbSet<Card> Cards { get; set; }
         public DbSet<CardBack> CardBacks { get; set; }
-        public DbSet<Info> Infos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

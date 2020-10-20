@@ -39,7 +39,7 @@ namespace HearthStone_Backend.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exceptionnn");
+                Console.WriteLine("Exception: " + e.Message);
             }
 
             return false;

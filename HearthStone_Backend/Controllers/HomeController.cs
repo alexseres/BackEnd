@@ -9,7 +9,6 @@ using HearthStone_Backend.Models;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
 using HearthStone_Backend.Services;
-using HearthStone_Backend.Migrations;
 
 namespace HearthStone_Backend.Controllers
 {
@@ -31,6 +30,10 @@ namespace HearthStone_Backend.Controllers
         [HttpPost("search")]
         public async Task<List<Card>> GetAskedCardForSearch([FromBody]string data)
         {
+            if (string.IsNullOrEmpty(data))
+            {
+                return _cardRepository.GetCards().Take(450).ToList();
+            }
             List<Card> list = _cardRepository.GetCards().ToList();
             List<Card> expectedResults = list.FindAll(x => x.Name.Contains(data));
             return expectedResults;
@@ -38,15 +41,10 @@ namespace HearthStone_Backend.Controllers
 
         //If DB is filled succesfully, replace the method with ONLY this: 
         //     return _cardRepository.GetCards().Take(50).ToList();
-
         [HttpGet("list")]
         public async Task<List<Card>>  GetHomePageData()
-        {
-            List<Card> result = await _apiFetcher.GetCards();
-            _cardRepository.AddCards(result);
-            
-            
-            return _cardRepository.GetCards().Take(50).ToList();
+        {           
+            return _cardRepository.GetCards().Take(250).ToList();
         }
         
         [HttpGet("info")]
@@ -60,14 +58,9 @@ namespace HearthStone_Backend.Controllers
 
         //If DB is filled succesfully, replace the method with ONLY this: 
         //     return _cardRepository.GetCardBacks().ToList();
-
-
         [HttpGet("cards-back")]
         public async Task<List<CardBack>> GetCardsBackData()
         {
-            var list = await _apiFetcher.GetBackCards();
-            _cardRepository.AddCardBacks(list);
-            
             return _cardRepository.GetCardBacks().ToList();
         }
     }
