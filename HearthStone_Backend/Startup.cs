@@ -41,8 +41,8 @@ namespace HearthStone_Backend
             services.AddSingleton<APIfetcher>(new APIfetcher());
             services.AddScoped<ICardRepository, SQLCardRepository>();
             services.AddDbContextPool<CardDBContext>(options =>
-                // options.UseNpgsql(Configuration.GetConnectionString("CardDBConnection")));
-                options.UseNpgsql("Server=127.0.0.1;Port=5432;Database=hearth_stone;Username=alexseres;Password=szopacs11;"));
+                options.UseNpgsql(Configuration.GetConnectionString("CardDBConnection")));
+                
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,10 +59,8 @@ namespace HearthStone_Backend
             app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthentication();
-            
 
             app.UseStaticFiles();
-
 
             app.UseRouting();
 

@@ -11,5 +11,15 @@ namespace HearthStone_Backend.Models
         IEnumerable<Card> GetCards();
         void AddCards(List<Card> cards);
         void DeleteCard(Card card);
+        CardBack GetCardBack(string id);
+        IEnumerable<CardBack> GetCardBacks();
+        void AddCardBacks(List<CardBack> cardBacks);
+        void DeleteCardBack(CardBack cardBacks);
+
+        Info GetInfo(string id);
+        IEnumerable<Info> GetInfos();
+        void AddInfos(List<Info> infos);
+        void DeleteInfo(Info info);
+
     }
 }
