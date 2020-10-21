@@ -18,12 +18,10 @@ namespace HearthStone_Backend.Controllers
     public class HomeController : ControllerBase
     {
         private readonly APIfetcher _apiFetcher;
-        private readonly ICardRepository _cardRepository;
 
-        public HomeController(ICardRepository repository, APIfetcher apiFetcher)
+        public HomeController(APIfetcher apiFetcher)
         {
             _apiFetcher = apiFetcher;
-            _cardRepository = repository;
 
         }
  
