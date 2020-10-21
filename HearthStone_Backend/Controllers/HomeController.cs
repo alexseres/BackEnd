@@ -9,7 +9,7 @@ using HearthStone_Backend.Models;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
 using HearthStone_Backend.Services;
-using HearthStone_Backend.Migrations;
+// using HearthStone_Backend.Migrations;
 
 namespace HearthStone_Backend.Controllers
 {
@@ -28,12 +28,14 @@ namespace HearthStone_Backend.Controllers
 
         }
         
-        [HttpPost("search")]
-        public async Task<List<Card>> GetAskedCardForSearch([FromBody]string data)
+        [Route("search")]
+        [HttpGet("{query}/{itemNumber}")]
+        public async Task<List<Card>> GetAskedCardForSearch([FromQuery(Name ="query" )]string query, [FromQuery(Name="itemNumber")]int itemNumber)
         {
             List<Card> list = _cardRepository.GetCards().ToList();
-            List<Card> expectedResults = list.FindAll(x => x.Name.Contains(data));
-            return expectedResults;
+            List<Card> expectedResults = list.FindAll(x => x.Name.Contains(query));
+            List<Card> finalResultsWithReduction = expectedResults.Take(itemNumber).ToList();
+            return finalResultsWithReduction;
         }
 
         //If DB is filled succesfully, replace the method with ONLY this: 
@@ -42,8 +44,8 @@ namespace HearthStone_Backend.Controllers
         [HttpGet("list")]
         public async Task<List<Card>>  GetHomePageData()
         {
-            List<Card> result = await _apiFetcher.GetCards();
-            _cardRepository.AddCards(result);
+            // List<Card> result = await _apiFetcher.GetCards();
+            // _cardRepository.AddCards(result);
             
             
             return _cardRepository.GetCards().Take(50).ToList();
@@ -65,9 +67,9 @@ namespace HearthStone_Backend.Controllers
         [HttpGet("cards-back")]
         public async Task<List<CardBack>> GetCardsBackData()
         {
-            var list = await _apiFetcher.GetBackCards();
-            _cardRepository.AddCardBacks(list);
-            
+            // var list = await _apiFetcher.GetBackCards();
+            // _cardRepository.AddCardBacks(list);
+            //
             return _cardRepository.GetCardBacks().ToList();
         }
     }

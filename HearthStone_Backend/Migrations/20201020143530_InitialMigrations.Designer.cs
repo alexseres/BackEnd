@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HearthStone_Backend.Migrations
 {
     [DbContext(typeof(CardDBContext))]
-    [Migration("20201019203226_InitialMigrations")]
+    [Migration("20201020143530_InitialMigrations")]
     partial class InitialMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,6 +79,43 @@ namespace HearthStone_Backend.Migrations
                     b.HasKey("CardId");
 
                     b.ToTable("Cards");
+                });
+
+            modelBuilder.Entity("HearthStone_Backend.Models.CardBack", b =>
+                {
+                    b.Property<string>("CardBackId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Enabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Img")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ImgAnimated")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Locale")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SortCategory")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SortOrder")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Source")
+                        .HasColumnType("text");
+
+                    b.HasKey("CardBackId");
+
+                    b.ToTable("CardBacks");
                 });
 #pragma warning restore 612, 618
         }
