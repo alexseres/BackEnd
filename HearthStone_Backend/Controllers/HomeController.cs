@@ -26,27 +26,7 @@ namespace HearthStone_Backend.Controllers
             _cardRepository = repository;
 
         }
-        
-        [HttpPost("search")]
-        public async Task<List<Card>> GetAskedCardForSearch([FromBody]string data)
-        {
-            if (string.IsNullOrEmpty(data))
-            {
-                return _cardRepository.GetCards().Take(450).ToList();
-            }
-            List<Card> list = _cardRepository.GetCards().ToList();
-            List<Card> expectedResults = list.FindAll(x => x.Name.Contains(data));
-            return expectedResults;
-        }
-
-        //If DB is filled succesfully, replace the method with ONLY this: 
-        //     return _cardRepository.GetCards().Take(50).ToList();
-        [HttpGet("list")]
-        public async Task<List<Card>>  GetHomePageData()
-        {           
-            return _cardRepository.GetCards().Take(250).ToList();
-        }
-        
+ 
         [HttpGet("info")]
         public async Task<Info> GetInfoToHomePage()
         {
