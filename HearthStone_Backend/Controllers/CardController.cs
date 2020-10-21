@@ -13,7 +13,7 @@ namespace HearthStone_Backend.Controllers
     {
 
         private readonly ICardRepository _cardRepository;
-        private readonly int amountOfCards = 350;
+        private readonly int amountOfCards = 20;
         public CardController(ICardRepository repository)
         {
             _cardRepository = repository;
@@ -31,8 +31,9 @@ namespace HearthStone_Backend.Controllers
         {
             if (string.IsNullOrEmpty(query))
             {
-                return _cardRepository.GetCards().Take(amountOfCards).ToList();
-                //return new List<Card>();
+                List<Card> listForAll = _cardRepository.GetCards().ToList();
+                List<Card> finalResultsAll = listForAll.Take(itemNumber).ToList();
+                return finalResultsAll;
             }
             List<Card> list = _cardRepository.GetCards().ToList();
             List<Card> expectedResults = list.FindAll(x => x.Name.Contains(query));
