@@ -20,13 +20,13 @@ namespace HearthStone_Backend.Controllers
         }
 
         [HttpGet("cards")]
-        public async Task<List<Card>> GetCards()
+        public List<Card> GetCards()
         {
             return _cardRepository.GetCards().Take(amountOfCards).ToList();
         }
 
         [HttpPost("search")]
-        public async Task<List<Card>> SearchForCard([FromBody] string data)
+        public List<Card> SearchForCard([FromBody] string data)
         {
             if (string.IsNullOrEmpty(data))
             {
