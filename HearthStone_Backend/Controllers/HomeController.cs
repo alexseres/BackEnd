@@ -32,6 +32,10 @@ namespace HearthStone_Backend.Controllers
         [HttpGet("{query}/{itemNumber}")]
         public async Task<List<Card>> GetAskedCardForSearch([FromQuery(Name ="query" )]string query, [FromQuery(Name="itemNumber")]int itemNumber)
         {
+            if (query == null)
+            {
+                return new List<Card>();
+            }
             List<Card> list = _cardRepository.GetCards().ToList();
             List<Card> expectedResults = list.FindAll(x => x.Name.Contains(query));
             List<Card> finalResultsWithReduction = expectedResults.Take(itemNumber).ToList();
