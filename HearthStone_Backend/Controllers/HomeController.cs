@@ -34,14 +34,5 @@ namespace HearthStone_Backend.Controllers
             
             return result;
         }
-
-
-        //If DB is filled succesfully, replace the method with ONLY this: 
-        //     return _cardRepository.GetCardBacks().ToList();
-        [HttpGet("cards-back")]
-        public async Task<List<CardBack>> GetCardsBackData()
-        {
-            return _cardRepository.GetCardBacks().ToList();
-        }
     }
 }

@@ -22,5 +22,17 @@ namespace HearthStone_Backend.Controllers
         {
             return _cardRepository.GetCardBacks().ToList();
         }
+
+        [HttpPost("search")]
+        public async Task<List<CardBack>> SearchForCard([FromBody] string data)
+        {
+            if (string.IsNullOrEmpty(data))
+            {
+                return _cardRepository.GetCardBacks().ToList();
+            }
+            List<CardBack> list = _cardRepository.GetCardBacks().ToList();
+            List<CardBack> expectedResults = list.FindAll(x => x.Name.Contains(data));
+            return expectedResults;
+        }
     }
 }
