@@ -68,12 +68,13 @@ namespace HearthStone_Backend.Models
 
         public void AddUser(User user)
         {
-            throw new NotImplementedException();
+            _context.Users.Add(user);
+            _context.SaveChanges();
         }
 
         public IEnumerable<User> GetUsers(List<User> users)
         {
-            throw new NotImplementedException();
+            return _context.Users;
         }
     }
 }

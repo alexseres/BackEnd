@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using HearthStone_Backend.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace HearthStone_Backend
 {
@@ -38,6 +39,18 @@ namespace HearthStone_Backend
             services.AddDbContextPool<CardDBContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("CardDBConnection")));
 
+            services.AddIdentity<User, IdentityRole>(config =>
+                {
+                    config.Password.RequiredLength = 4;
+                })
+                .AddEntityFrameworkStores<CardDBContext>()
+                .AddDefaultTokenProviders();
+            services.ConfigureApplicationCookie(config =>
+            {
+                config.Cookie.Name = "Identity.Email";
+                config.LoginPath = "Login";
+            });    
+            
             services.AddMvc().AddNewtonsoftJson();
             services.AddControllers();
 

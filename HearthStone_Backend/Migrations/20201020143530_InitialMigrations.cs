@@ -25,7 +25,7 @@ namespace HearthStone_Backend.Migrations
                 {
                     table.PrimaryKey("PK_CardBacks", x => x.CardBackId);
                 });
-
+            
             migrationBuilder.CreateTable(
                 name: "Cards",
                 columns: table => new
@@ -59,7 +59,7 @@ namespace HearthStone_Backend.Migrations
         {
             migrationBuilder.DropTable(
                 name: "CardBacks");
-
+            
             migrationBuilder.DropTable(
                 name: "Cards");
         }
