@@ -18,7 +18,7 @@ namespace HearthStone_Backend.Models
         public DbSet<User> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().HasIndex(user =>new {user.Email}).IsUnique(true);
+            modelBuilder.Entity<User>().HasIndex(user =>new {user.Email}).IsUnique();
         }
     }
 }
