@@ -66,5 +66,14 @@ namespace HearthStone_Backend.Models
             _context.CardBacks.Remove(cardBack);
         }
 
+        public void AddUser(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> GetUsers(List<User> users)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

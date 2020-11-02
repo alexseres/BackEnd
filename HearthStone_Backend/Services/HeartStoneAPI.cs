@@ -19,7 +19,7 @@ namespace HearthStone_Backend.Services
         private readonly string apiKey = "dec58908a9msh533ee634def76d9p1385d4jsnb15fc973d01d";
         
 
-        public HttpClient BuildsClient(string keyword)
+        private HttpClient BuildsClient(string keyword)
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(urlOfHome+keyword);
@@ -43,7 +43,7 @@ namespace HearthStone_Backend.Services
             }
             else
             {
-                return null;
+                return new List<Card>();
             }
 
         }

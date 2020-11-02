@@ -8,7 +8,6 @@ namespace HearthStone_Backend.Models
     
     public class Info
     {
-        
         public List<string> Classes{ get; set; }
         public List<string> Sets{ get; set; }
         public List<string> Standard{ get; set; }

@@ -16,6 +16,9 @@ namespace HearthStone_Backend.Models
         IEnumerable<CardBack> GetCardBacks();
         void AddCardBacks(List<CardBack> cardBacks);
         void DeleteCardBack(CardBack cardBacks);
+        void AddUser(User user);
+        IEnumerable<User> GetUsers(List<User> users);
+
 
     }
 }
