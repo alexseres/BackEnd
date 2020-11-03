@@ -1,6 +1,8 @@
+using System.IO;
 using System.Threading.Tasks;
 using HearthStone_Backend.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 
 namespace HearthStone_Backend.Controllers
 {
@@ -15,16 +17,13 @@ namespace HearthStone_Backend.Controllers
             _userRepository = repository;
         }
 
-        [Route("registration")]
         [HttpPost]
-        public async Task<User> CreateUser(string email, string password)
+        [Route("registration")]
+        public async Task<User> CreateUser([FromBody] User user)
         {
-            var user = new User()
-            {
-                Email = email,
-                Password = password
-            };
-            _userRepository.AddUser(user);
+
+            //_userRepository.AddUser(user);
+
             return user;
         }
     }

@@ -10,3 +10,5 @@ HearthStone_Backend/.vs/HearthStone_Backend/v16/.suo
 HearthStone_Backend/appsettings.json
 HearthStone_Backend/appsettings.json
 HearthStone_Backend/appsettings.json
+*.v2
+HearthStone_Backend/.vs/HearthStone_Backend/v16/.suo
