@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 using HearthStone_Backend.Models;
@@ -31,6 +32,17 @@ namespace HearthStone_Backend.Controllers
             _userRepository.AddUser(user);
 
             return user;
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public async Task<bool> LoginUser([FromBody] User loggerUser)
+        {
+            User targetUser = _userRepository.GetUserByEmail(loggerUser.Email);
+
+            bool loginResult = _passwordHasher.VerifyPasswords(loggerUser.Password, targetUser.Password);
+
+            return loginResult;
         }
     }
 }

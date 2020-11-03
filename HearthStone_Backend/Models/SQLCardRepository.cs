@@ -79,8 +79,9 @@ namespace HearthStone_Backend.Models
         }
 
         public User GetUserByEmail(string email)
-         {
+        {
             return _context.Users.Where(x => x.Email.Equals(email)).FirstOrDefault();
         }
-        }
     }
+
+}

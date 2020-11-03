@@ -33,7 +33,7 @@ namespace HearthStone_Backend.Services
             byte[] salt = new byte[16];
             Array.Copy(hashBytes, 0, salt, 0, 16);
 
-            var pbkdf2 = new Rfc2898DeriveBytes(userEnteredPassword, salt, 10000);
+            var pbkdf2 = new Rfc2898DeriveBytes(userEnteredPassword, salt);
             byte[] hash = pbkdf2.GetBytes(20);
 
 
