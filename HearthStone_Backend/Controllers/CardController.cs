@@ -28,7 +28,7 @@ namespace HearthStone_Backend.Controllers
 
         [Route("search")]
         [HttpGet("{query}/{itemNumber}")]
-        public async Task<List<Card>> GetAskedCardForSearch([FromQuery(Name ="query" )]string query, [FromQuery(Name="itemNumber")]int itemNumber)
+        public async Task<List<Card>> GetAskedCardForSearch([FromQuery(Name ="query")]string query, [FromQuery(Name="itemNumber")]int itemNumber)
         {
             if (string.IsNullOrEmpty(query))
             {

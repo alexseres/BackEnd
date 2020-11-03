@@ -45,10 +45,11 @@ namespace HearthStone_Backend
                 })
                 .AddEntityFrameworkStores<CardDBContext>()
                 .AddDefaultTokenProviders();
+            
             services.ConfigureApplicationCookie(config =>
             {
                 config.Cookie.Name = "Identity.Email";
-                config.LoginPath = "Login";
+                config.LoginPath = "/Login";
             });    
             
             services.AddMvc().AddNewtonsoftJson();
