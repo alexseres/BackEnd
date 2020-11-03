@@ -56,6 +56,7 @@ namespace HearthStone_Backend
 
             services.AddScoped<ICardRepository, SQLCardRepository>();
             services.AddScoped<APIfetcher>();
+            services.AddScoped<PasswordHasher>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

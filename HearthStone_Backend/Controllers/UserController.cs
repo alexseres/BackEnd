@@ -1,6 +1,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using HearthStone_Backend.Models;
+using HearthStone_Backend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 
@@ -11,18 +12,23 @@ namespace HearthStone_Backend.Controllers
     public class UserController
     {
         private readonly ICardRepository _userRepository;
+        private readonly PasswordHasher _passwordHasher;
 
-        public UserController(ICardRepository repository)
+        public UserController(ICardRepository repository, PasswordHasher passwordHasher)
         {
             _userRepository = repository;
+            _passwordHasher = passwordHasher;
         }
 
         [HttpPost]
         [Route("registration")]
         public async Task<User> CreateUser([FromBody] User user)
         {
+            string hashedPW = _passwordHasher.CreateHashedPassword(user.Password);
 
-            //_userRepository.AddUser(user);
+            user.Password = hashedPW;
+
+            _userRepository.AddUser(user);
 
             return user;
         }
