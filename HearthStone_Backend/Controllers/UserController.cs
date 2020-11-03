@@ -14,7 +14,7 @@ namespace HearthStone_Backend.Controllers
         {
             _userRepository = repository;
         }
-
+        
         [Route("registration")]
         [HttpPost]
         public async Task<User> CreateUser(string email, string password)
