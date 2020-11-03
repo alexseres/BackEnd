@@ -45,12 +45,14 @@ namespace HearthStone_Backend
                 })
                 .AddEntityFrameworkStores<CardDBContext>()
                 .AddDefaultTokenProviders();
+
             services.ConfigureApplicationCookie(config =>
             {
-                config.Cookie.Name = "Identity.Email";
+                config.Cookie.Name = "Identity.Cookie";
                 config.LoginPath = "/Login";
-            });    
-            
+            });
+
+
             services.AddMvc().AddNewtonsoftJson();
             services.AddControllers();
 
@@ -72,13 +74,16 @@ namespace HearthStone_Backend
             }
             app.UseCors(MyAllowSpecificOrigins);
 
-            app.UseAuthentication();
+
 
             app.UseStaticFiles();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
