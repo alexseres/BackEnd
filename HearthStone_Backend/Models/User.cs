@@ -8,11 +8,11 @@ namespace HearthStone_Backend.Models
     {
         [Required]
         [Key]
-        public string Email { get; set; }
+        public override string Email { get; set; }
         [Required]
         public string Password { get; set; }
 
         [Required]
-        public string UserName { get; set; }
+        public override string UserName { get; set; }
     }
 }

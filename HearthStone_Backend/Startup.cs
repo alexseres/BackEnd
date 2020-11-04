@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using HearthStone_Backend.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 namespace HearthStone_Backend
@@ -42,21 +44,32 @@ namespace HearthStone_Backend
             services.AddIdentity<User, IdentityRole>(config =>
                 {
                     config.Password.RequiredLength = 4;
+                    config.SignIn.RequireConfirmedEmail = false;
                 })
                 .AddEntityFrameworkStores<CardDBContext>()
                 .AddDefaultTokenProviders();
             
             services.ConfigureApplicationCookie(config =>
             {
-                config.Cookie.Name = "Identity.Email";
-                config.LoginPath = "/Login";
-            });    
-            
+                config.Cookie.Name = "UserLoginCookie";
+                config.Cookie.Domain = ".domain.localhost";
+                // config.Events = new CookieAuthenticationEvents()
+                // {
+                //     OnRedirectToLogin = (context) =>
+                //     {
+                //         context.HttpContext.Response.Redirect("http://localhost:3000");
+                //         return Task.CompletedTask;
+                //     }
+                // };
+            });
+
+
             services.AddMvc().AddNewtonsoftJson();
             services.AddControllers();
 
             services.AddScoped<ICardRepository, SQLCardRepository>();
             services.AddScoped<APIfetcher>();
+            services.AddScoped<PasswordHasher>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,14 +85,19 @@ namespace HearthStone_Backend
             }
             app.UseCors(MyAllowSpecificOrigins);
 
-            app.UseAuthentication();
+
 
             app.UseStaticFiles();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
+            // app.UseSession();
+      
+            
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

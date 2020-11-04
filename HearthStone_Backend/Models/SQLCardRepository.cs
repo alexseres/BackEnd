@@ -68,13 +68,20 @@ namespace HearthStone_Backend.Models
 
         public void AddUser(User user)
         {
-            _context.Users.Add(user);
-            _context.SaveChanges();
+             _context.Users.Add(user);
+             _context.SaveChanges();
         }
 
         public IEnumerable<User> GetUsers(List<User> users)
-        {
+         {
             return _context.Users;
+      
+        }
+
+        public User GetUserByEmail(string email)
+        {
+            return _context.Users.Where(x => x.Email.Equals(email)).FirstOrDefault();
         }
     }
+
 }
