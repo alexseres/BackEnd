@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HearthStone_Backend.Models
 {
-    public class CardDBContext : DbContext
+    public class CardDBContext : IdentityDbContext<User>
     {
         public CardDBContext(DbContextOptions<CardDBContext> options) : base(options)
         {
@@ -16,9 +18,12 @@ namespace HearthStone_Backend.Models
         public DbSet<CardBack> CardBacks { get; set; } 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<IdentityUserClaim<string>> IdentityUserClaim { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().HasIndex(user =>new {user.Email}).IsUnique();
+            base.OnModelCreating(modelBuilder);
+
         }
     }
 }

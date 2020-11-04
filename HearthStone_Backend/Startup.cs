@@ -14,6 +14,7 @@ using HearthStone_Backend.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.CookiePolicy;
 
 namespace HearthStone_Backend
 {
@@ -45,26 +46,31 @@ namespace HearthStone_Backend
                 {
                     config.Password.RequiredLength = 4;
                     config.SignIn.RequireConfirmedEmail = false;
+                    config.Password.RequireDigit = false;
+                    config.Password.RequireUppercase = false;
+                    config.Password.RequireNonAlphanumeric = false;
                 })
                 .AddEntityFrameworkStores<CardDBContext>()
                 .AddDefaultTokenProviders();
-            
+
+
             services.ConfigureApplicationCookie(config =>
             {
-                config.Cookie.Name = "UserLoginCookie";
-                config.Cookie.Domain = ".domain.localhost";
-                // config.Events = new CookieAuthenticationEvents()
-                // {
-                //     OnRedirectToLogin = (context) =>
-                //     {
-                //         context.HttpContext.Response.Redirect("http://localhost:3000");
-                //         return Task.CompletedTask;
-                //     }
-                // };
+                config.Cookie.Name = "Identity.Cookie";
+                config.Cookie.Domain = "localhost:5000";
+                config.Cookie.HttpOnly = false;
+                config.LoginPath = "/userAPI/login";
+                
+            });
+
+            services.AddAuthentication().AddCookie("login", config =>
+            {
+                config.LoginPath = "/userAPI/login";
+                config.SlidingExpiration = true;
             });
 
 
-            services.AddMvc().AddNewtonsoftJson();
+            services.AddMvc();
             services.AddControllers();
 
             services.AddScoped<ICardRepository, SQLCardRepository>();
@@ -92,10 +98,10 @@ namespace HearthStone_Backend
             app.UseRouting();
 
             app.UseAuthentication();
+
             app.UseAuthorization();
 
-            // app.UseSession();
-      
+            //app.UseSession();
             
             
             app.UseEndpoints(endpoints =>
