@@ -32,12 +32,14 @@ namespace HearthStone_Backend
         public void ConfigureServices(IServiceCollection services)
         {
             // TODO: Cors address should be specific and stored in appsettings.json
+            var allowedOrigins = new[] { "http://localhost:000/", "http://localhost:3000", "http://localhost:3000/login" };
+
             services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                                   builder =>
                                   {
-                                      builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                                      builder.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
                                   });
             });
             services.AddDbContextPool<CardDBContext>(options =>
@@ -51,20 +53,30 @@ namespace HearthStone_Backend
                     config.Password.RequireUppercase = false;
                     config.Password.RequireNonAlphanumeric = false;
                 })
-                .AddEntityFrameworkStores<CardDBContext>()
-                .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<CardDBContext>();
+
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+                {
+                    options.Cookie.Name = "Identity.Cookie";
+                    options.ExpireTimeSpan = new TimeSpan(0, 5, 0);
+                    options.Cookie.HttpOnly = false;
+                });
 
             /*services.ConfigureApplicationCookie(config =>
             {
                 config.Cookie.Name = "User.Cookie";
-                config.LoginPath = "/userAPI/login";
+                config.ExpireTimeSpan = new TimeSpan(1, 5, 0);
+                config.Cookie.HttpOnly = false;
             });*/
 
-            services.AddAuthentication("OAuth").AddJwtBearer("OAuth", config =>
+            /*services.AddAuthentication("OAuth")
+                .AddJwtBearer("OAuth", config =>
             {
 
-            });
-                
+            });*/
+
 
 
             services.AddMvc();
@@ -85,13 +97,12 @@ namespace HearthStone_Backend
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-            app.UseHsts();
+                app.UseHsts();
             }
 
             app.UseHttpsRedirection();
-            app.UseCors(MyAllowSpecificOrigins);
 
-
+            //var allowedOrigins = new[] { "localhost:5000", "localhost:3000/login", "localhost:3000/" };
 
             app.UseStaticFiles();
 
@@ -101,6 +112,7 @@ namespace HearthStone_Backend
 
             app.UseAuthorization();
 
+            app.UseCors(MyAllowSpecificOrigins);
             //app.UseSession();
            
             

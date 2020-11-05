@@ -6,19 +6,23 @@ using HearthStone_Backend.Models;
 using HearthStone_Backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Routing;
 using System.Security.Claims;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace HearthStone_Backend.Controllers
 {
     [Route("userAPI")] 
     [ApiController]
-    public class UserController
+    [EnableCors]
+    public class UserController : ControllerBase
     {
         private readonly ICardRepository _userRepository;
         private readonly PasswordHasher _passwordHasher;
@@ -59,7 +63,7 @@ namespace HearthStone_Backend.Controllers
 
         [HttpPost]
         [Route("login")]
-        [AllowAnonymous]
+        [EnableCors]
         public async Task<User> LoginUser([FromBody] User loggerUser)
         {
             //User targetUser = _userRepository.GetUserByEmail(loggerUser.Email);        
@@ -82,9 +86,19 @@ namespace HearthStone_Backend.Controllers
                     if(signInResult.Succeeded)
                     {
 
-                        var result = await _signInManager.PasswordSignInAsync(targetUser, targetUser.Password, false, false);
+                        //var result = await _signInManager.PasswordSignInAsync(targetUser, targetUser.Password, false, false);
                         
-                        Console.WriteLine(result.Succeeded);
+
+                        var claims = new List<Claim> { 
+                            new Claim(ClaimTypes.Email, targetUser.Email),
+                            new Claim(ClaimTypes.Name, targetUser.UserName)
+                        };
+
+                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+                        //Console.WriteLine(result.Succeeded);
 
                         
                     }            
@@ -93,6 +107,14 @@ namespace HearthStone_Backend.Controllers
             }
 
             return targetUser;
+        }
+
+        [HttpGet]
+        [Route("auth")]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+        public async Task AuthPage()
+        {
+
         }
     }
 }
