@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HearthStone_Backend.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -10,6 +10,7 @@ namespace HearthStone_Backend.Controllers
 {
     [Route("cardsAPI")]
     [ApiController]
+    [EnableCors]
     public class CardController : ControllerBase
     {
 

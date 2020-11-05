@@ -1,20 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using HearthStone_Backend.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using HearthStone_Backend.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.CookiePolicy;
 
 namespace HearthStone_Backend
 {
@@ -28,11 +22,10 @@ namespace HearthStone_Backend
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // TODO: Cors address should be specific and stored in appsettings.json
-            var allowedOrigins = new[] { "http://localhost:000/", "http://localhost:3000", "http://localhost:3000/login" };
+            var allowedOrigins = new[] { "http://localhost:5000/", "http://localhost:3000", "http://localhost:3000/login", "http://localhost:3000/cards-back", "http://localhost:3000/cards" };
 
             services.AddCors(options =>
             {
@@ -42,6 +35,7 @@ namespace HearthStone_Backend
                                       builder.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
                                   });
             });
+
             services.AddDbContextPool<CardDBContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("CardDBConnection")));
 
@@ -63,20 +57,6 @@ namespace HearthStone_Backend
                     options.ExpireTimeSpan = new TimeSpan(0, 5, 0);
                     options.Cookie.HttpOnly = false;
                 });
-
-            /*services.ConfigureApplicationCookie(config =>
-            {
-                config.Cookie.Name = "User.Cookie";
-                config.ExpireTimeSpan = new TimeSpan(1, 5, 0);
-                config.Cookie.HttpOnly = false;
-            });*/
-
-            /*services.AddAuthentication("OAuth")
-                .AddJwtBearer("OAuth", config =>
-            {
-
-            });*/
-
 
 
             services.AddMvc();
@@ -102,7 +82,6 @@ namespace HearthStone_Backend
 
             app.UseHttpsRedirection();
 
-            //var allowedOrigins = new[] { "localhost:5000", "localhost:3000/login", "localhost:3000/" };
 
             app.UseStaticFiles();
 
@@ -112,9 +91,7 @@ namespace HearthStone_Backend
 
             app.UseAuthorization();
 
-            app.UseCors(MyAllowSpecificOrigins);
-            //app.UseSession();
-           
+            app.UseCors(MyAllowSpecificOrigins);           
             
             app.UseEndpoints(endpoints =>
             {

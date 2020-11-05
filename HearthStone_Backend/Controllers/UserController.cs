@@ -49,14 +49,7 @@ namespace HearthStone_Backend.Controllers
             
             user.PasswordHash = hashedPW;
 
-            //_userRepository.AddUser(user);
-
             var result = await _userManager.CreateAsync(user, user.Password);
-
-            if (result.Succeeded)
-            {
-                Console.WriteLine("Registralt!!!!");
-            }
 
             return user;
         }
@@ -66,55 +59,31 @@ namespace HearthStone_Backend.Controllers
         [EnableCors]
         public async Task<User> LoginUser([FromBody] User loggerUser)
         {
-            //User targetUser = _userRepository.GetUserByEmail(loggerUser.Email);        
-
-
+            
             var targetUser = await _userManager.FindByEmailAsync(loggerUser.Email);
             
-            bool loginResult = false;
-
             if (targetUser != null)
             {
+           
+                var signInResult = await _signInManager.CheckPasswordSignInAsync(targetUser, targetUser.Password, false);
 
-                //loginResult = _passwordHasher.VerifyPasswords(loggerUser.Password, targetUser.Password);
-                loginResult = true;
-                if(loginResult)
-                {
-                    
-                    var signInResult = await _signInManager.CheckPasswordSignInAsync(targetUser, targetUser.Password, false);
+                if(signInResult.Succeeded)
+                {                        
 
-                    if(signInResult.Succeeded)
-                    {
+                    var claims = new List<Claim> { 
+                        new Claim(ClaimTypes.Email, targetUser.Email),
+                        new Claim(ClaimTypes.Name, targetUser.UserName)
+                    };
 
-                        //var result = await _signInManager.PasswordSignInAsync(targetUser, targetUser.Password, false, false);
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
                         
-
-                        var claims = new List<Claim> { 
-                            new Claim(ClaimTypes.Email, targetUser.Email),
-                            new Claim(ClaimTypes.Name, targetUser.UserName)
-                        };
-
-                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-
-                        //Console.WriteLine(result.Succeeded);
-
-                        
-                    }            
-                }
-
+                }            
+                
             }
 
             return targetUser;
-        }
-
-        [HttpGet]
-        [Route("auth")]
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
-        public async Task AuthPage()
-        {
-
         }
     }
 }
