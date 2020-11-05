@@ -60,24 +60,9 @@ namespace HearthStone_Backend.Controllers
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
-        public async Task<bool> LoginUser([FromBody] User loggerUser)
+        public async Task<User> LoginUser([FromBody] User loggerUser)
         {
-            //User targetUser = _userRepository.GetUserByEmail(loggerUser.Email);
-
-
-            var claims = new List<Claim> {
-                new Claim(ClaimTypes.NameIdentifier, loggerUser.UserName),
-                new Claim(ClaimTypes.Name, loggerUser.UserName),
-                new Claim(ClaimTypes.Role, "User"),
-            };
-
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            var authProperties = new AuthenticationProperties()
-            {
-                AllowRefresh = true,
-                IsPersistent = true
-            };
+            //User targetUser = _userRepository.GetUserByEmail(loggerUser.Email);        
 
 
             var targetUser = await _userManager.FindByEmailAsync(loggerUser.Email);
@@ -92,22 +77,22 @@ namespace HearthStone_Backend.Controllers
                 if(loginResult)
                 {
                     
-                        var signInResult = await _signInManager.CheckPasswordSignInAsync(targetUser, targetUser.Password, false);
-                        Console.WriteLine(signInResult.Succeeded);
+                    var signInResult = await _signInManager.CheckPasswordSignInAsync(targetUser, targetUser.Password, false);
 
-                        if(signInResult.Succeeded)
-                        {
+                    if(signInResult.Succeeded)
+                    {
 
-                            var result = await _signInManager.PasswordSignInAsync(targetUser, targetUser.Password,true,false);
-                            Console.WriteLine(result.Succeeded);
-                        }
-                    
-                    
+                        var result = await _signInManager.PasswordSignInAsync(targetUser, targetUser.Password, false, false);
+                        
+                        Console.WriteLine(result.Succeeded);
+
+                        
+                    }            
                 }
 
             }
 
-            return loginResult;
+            return targetUser;
         }
     }
 }

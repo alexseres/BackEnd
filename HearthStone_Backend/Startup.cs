@@ -31,6 +31,7 @@ namespace HearthStone_Backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // TODO: Cors address should be specific and stored in appsettings.json
             services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
@@ -53,21 +54,17 @@ namespace HearthStone_Backend
                 .AddEntityFrameworkStores<CardDBContext>()
                 .AddDefaultTokenProviders();
 
-
-            services.ConfigureApplicationCookie(config =>
+            /*services.ConfigureApplicationCookie(config =>
             {
-                config.Cookie.Name = "Identity.Cookie";
-                config.Cookie.Domain = "localhost:5000";
-                config.Cookie.HttpOnly = false;
+                config.Cookie.Name = "User.Cookie";
                 config.LoginPath = "/userAPI/login";
+            });*/
+
+            services.AddAuthentication("OAuth").AddJwtBearer("OAuth", config =>
+            {
+
+            });
                 
-            });
-
-            services.AddAuthentication().AddCookie("login", config =>
-            {
-                config.LoginPath = "/userAPI/login";
-                config.SlidingExpiration = true;
-            });
 
 
             services.AddMvc();
@@ -88,7 +85,10 @@ namespace HearthStone_Backend
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+            app.UseHsts();
             }
+
+            app.UseHttpsRedirection();
             app.UseCors(MyAllowSpecificOrigins);
 
 
@@ -102,7 +102,7 @@ namespace HearthStone_Backend
             app.UseAuthorization();
 
             //app.UseSession();
-            
+           
             
             app.UseEndpoints(endpoints =>
             {
