@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using HearthStone_Backend.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 
 namespace HearthStone_Backend
 {
@@ -56,6 +57,7 @@ namespace HearthStone_Backend
                     options.Cookie.Name = "Identity.Cookie";
                     options.ExpireTimeSpan = new TimeSpan(0, 5, 0);
                     options.Cookie.HttpOnly = false;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.None;
                 });
 
 

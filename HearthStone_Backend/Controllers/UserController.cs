@@ -24,18 +24,15 @@ namespace HearthStone_Backend.Controllers
     [EnableCors]
     public class UserController : ControllerBase
     {
-        private readonly ICardRepository _userRepository;
         private readonly PasswordHasher _passwordHasher;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
 
         public UserController(
-            ICardRepository repository,
             PasswordHasher passwordHasher,
             UserManager<User> userManager,
             SignInManager<User> singInManager)
         {
-            _userRepository = repository;
             _passwordHasher = passwordHasher;
             _userManager = userManager;
             _signInManager = singInManager;
@@ -65,7 +62,7 @@ namespace HearthStone_Backend.Controllers
             if (targetUser != null)
             {
            
-                var signInResult = await _signInManager.CheckPasswordSignInAsync(targetUser, targetUser.Password, false);
+                var signInResult = await _signInManager.CheckPasswordSignInAsync(targetUser, loggerUser.Password, false);
 
                 if(signInResult.Succeeded)
                 {                        
@@ -77,7 +74,8 @@ namespace HearthStone_Backend.Controllers
 
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity));
                         
                 }            
                 
