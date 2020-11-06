@@ -62,7 +62,7 @@ namespace HearthStone_Backend.Controllers
             if (targetUser != null)
             {
            
-                var signInResult = await _signInManager.CheckPasswordSignInAsync(targetUser, loggerUser.Password, false);
+                var signInResult = await _signInManager.CheckPasswordSignInAsync(targetUser, targetUser.Password, false);
 
                 if(signInResult.Succeeded)
                 {                        

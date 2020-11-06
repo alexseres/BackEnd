@@ -10,30 +10,31 @@ using HearthStone_Backend.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
+using System.Linq;
 
 namespace HearthStone_Backend
 {
     public class Startup
     {
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        private readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // TODO: Cors address should be specific and stored in appsettings.json
-            var allowedOrigins = new[] { "http://localhost:5000/", "http://localhost:3000", "http://localhost:3000/login", "http://localhost:3000/cards-back", "http://localhost:3000/cards" };
+            string[] allowOrigins = Configuration.GetSection("CorsAllowedOrigins").GetChildren().Select(key => key.Value).ToArray();
 
             services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                                   builder =>
                                   {
-                                      builder.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                                      builder.WithOrigins(allowOrigins).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
                                   });
             });
 
