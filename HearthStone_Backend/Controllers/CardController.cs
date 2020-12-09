@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HearthStone_Backend.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace HearthStone_Backend.Controllers
 {
-    [Route("cardsAPI")]
+    [Route("api/[controller]")]
     [ApiController]
+    [EnableCors]
     public class CardController : ControllerBase
     {
 
@@ -19,15 +21,14 @@ namespace HearthStone_Backend.Controllers
             _cardRepository = repository;
         }
 
-        [HttpGet("cards")]
+        [HttpGet]
         public List<Card> GetCards()
         {
             return _cardRepository.GetCards().Take(amountOfCards).ToList();
         }
 
-        [Route("search")]
         [HttpGet("{query}/{itemNumber}")]
-        public async Task<List<Card>> GetAskedCardForSearch([FromQuery(Name ="query" )]string query, [FromQuery(Name="itemNumber")]int itemNumber)
+        public async Task<List<Card>> GetAskedCardForSearch([FromQuery(Name ="query")]string query, [FromQuery(Name="itemNumber")]int itemNumber)
         {
             if (string.IsNullOrEmpty(query))
             {

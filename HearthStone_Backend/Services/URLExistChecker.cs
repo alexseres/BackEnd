@@ -10,7 +10,6 @@ namespace HearthStone_Backend.Services
         
         public static bool Checker(string url)
         {
-
             try
             {
                 HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
@@ -27,7 +26,6 @@ namespace HearthStone_Backend.Services
                         Debug.WriteLine("The remote server has thrown an internal error. Url is not valid: {0}", url);
                     }
                 }
-
             }
             catch (WebException ex)
             {
@@ -35,7 +33,6 @@ namespace HearthStone_Backend.Services
                 {
                     return false;
                 }
-
             }
             catch (Exception e)
             {

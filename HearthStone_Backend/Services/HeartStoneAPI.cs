@@ -1,13 +1,10 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using HearthStone_Backend.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 
 namespace HearthStone_Backend.Services
 {
@@ -19,7 +16,7 @@ namespace HearthStone_Backend.Services
         private readonly string apiKey = "dec58908a9msh533ee634def76d9p1385d4jsnb15fc973d01d";
         
 
-        public HttpClient BuildsClient(string keyword)
+        private HttpClient BuildsClient(string keyword)
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(urlOfHome+keyword);
@@ -43,7 +40,7 @@ namespace HearthStone_Backend.Services
             }
             else
             {
-                return null;
+                return new List<Card>();
             }
 
         }
@@ -73,6 +70,7 @@ namespace HearthStone_Backend.Services
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(content);
                 Info infoContents = JsonConvert.DeserializeObject<Info>(content);
 
                 return infoContents;
