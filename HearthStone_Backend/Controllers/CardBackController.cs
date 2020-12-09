@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HearthStone_Backend.Controllers
 {
-    [Route("cardbackAPI")]
+    [Route("api/[controller]")]
     [ApiController]
     [EnableCors]
     public class CardBackController : Controller
@@ -18,13 +18,13 @@ namespace HearthStone_Backend.Controllers
             _cardRepository = repository;
         }
 
-        [HttpGet("backs")]
+        [HttpGet]
         public async Task<List<CardBack>> GetCardsBackData()
         {
             return _cardRepository.GetCardBacks().ToList();
         }
 
-        [HttpPost("search")]
+        [HttpPost]
         public async Task<List<CardBack>> SearchForCard([FromBody] string data)
         {
             if (string.IsNullOrEmpty(data))

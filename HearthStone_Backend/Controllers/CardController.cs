@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HearthStone_Backend.Controllers
 {
-    [Route("cardsAPI")]
+    [Route("api/[controller]")]
     [ApiController]
     [EnableCors]
     public class CardController : ControllerBase
@@ -21,13 +21,12 @@ namespace HearthStone_Backend.Controllers
             _cardRepository = repository;
         }
 
-        [HttpGet("cards")]
+        [HttpGet]
         public List<Card> GetCards()
         {
             return _cardRepository.GetCards().Take(amountOfCards).ToList();
         }
 
-        [Route("search")]
         [HttpGet("{query}/{itemNumber}")]
         public async Task<List<Card>> GetAskedCardForSearch([FromQuery(Name ="query")]string query, [FromQuery(Name="itemNumber")]int itemNumber)
         {

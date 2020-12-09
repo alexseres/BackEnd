@@ -70,6 +70,7 @@ namespace HearthStone_Backend.Services
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(content);
                 Info infoContents = JsonConvert.DeserializeObject<Info>(content);
 
                 return infoContents;

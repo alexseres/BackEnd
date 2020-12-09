@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Cors;
 namespace HearthStone_Backend.Controllers
 {
 
-    [Route("api")]
+    [Route("api/[controller]")]
     [ApiController]
     [EnableCors]
     public class HomeController : ControllerBase
@@ -20,7 +20,7 @@ namespace HearthStone_Backend.Controllers
 
         }
         
-        [HttpGet("info")]
+        [HttpGet]
         public async Task<Info> GetInfoToHomePage()
         {
             Info result = await _apiFetcher.GetInfoToHomePage();
