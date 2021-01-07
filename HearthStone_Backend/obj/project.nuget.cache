@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "gQuvYjqv3Q1h1QBfBvo1XHm8O78bpLAWYeHFbpulXOG38EOjZzAU8J6xpvxy0nuSnPwaizgYqejjW840wLPKxw==",
+  "dgSpecHash": "DQV3QzwV0MacueeQ5eTtJ+UkbTTMCpAps9eD6gIuOVnPzXEJRHUFxrSq3VmMrl+3kRbXfCA5XTJFt4gZZIYvkg==",
   "success": true,
-  "projectFilePath": "E:\\VS Projects\\TW_6thWeek\\BackEnd\\HearthStone_Backend\\HearthStone_Backend.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "/Users/alexseres/Desktop/ASP.NET/First_week/HearthStone/BackEnd/HearthStone_Backend/HearthStone_Backend.csproj",
+  "expectedPackageFiles": [
+    "/Users/alexseres/.nuget/packages/microsoft.aspnetcore.app.ref/3.1.10/microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512"
+  ],
   "logs": []
 }

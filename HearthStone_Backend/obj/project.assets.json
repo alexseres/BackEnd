@@ -8,30 +8,29 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\petho\\.nuget\\packages\\": {}
+    "/Users/alexseres/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\VS Projects\\TW_6thWeek\\BackEnd\\HearthStone_Backend\\HearthStone_Backend.csproj",
+      "projectUniqueName": "/Users/alexseres/Desktop/ASP.NET/First_week/HearthStone/BackEnd/HearthStone_Backend/HearthStone_Backend.csproj",
       "projectName": "HearthStone_Backend",
-      "projectPath": "E:\\VS Projects\\TW_6thWeek\\BackEnd\\HearthStone_Backend\\HearthStone_Backend.csproj",
-      "packagesPath": "C:\\Users\\petho\\.nuget\\packages\\",
-      "outputPath": "E:\\VS Projects\\TW_6thWeek\\BackEnd\\HearthStone_Backend\\obj\\",
+      "projectPath": "/Users/alexseres/Desktop/ASP.NET/First_week/HearthStone/BackEnd/HearthStone_Backend/HearthStone_Backend.csproj",
+      "packagesPath": "/Users/alexseres/.nuget/packages/",
+      "outputPath": "/Users/alexseres/Desktop/ASP.NET/First_week/HearthStone/BackEnd/HearthStone_Backend/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\petho\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/alexseres/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "projectReferences": {}
         }
       },
@@ -43,6 +42,7 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
         "imports": [
           "net461",
           "net462",
@@ -53,6 +53,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[3.1.10, 3.1.10]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -61,7 +67,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.101/RuntimeIdentifierGraph.json"
       }
     }
   }
